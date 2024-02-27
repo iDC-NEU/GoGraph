@@ -1,7 +1,6 @@
 ./pretreatment.sh
-./changetxt.sh
-./GoGraph.sh
-./PartVexter.sh
-./ProcessBigdegreePoint_new.sh
-./ProcessIsolatedPoint_new.sh
+./gograph.sh
+./partvertex.sh
+./ProcessBigdegreePoint.sh
+./ProcessIsolatedPoint.sh
 ./edgemap.sh

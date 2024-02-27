@@ -1,7 +1,3 @@
-/**
-    1. 先划分为cluster
-    2. 在cluster内进行
-*/
 #include <iostream>
 #include <fstream>
 #include <vector>
@@ -36,16 +32,16 @@ bool cmp2(const std::pair<int, int>& a, const std::pair<int, int>& b) {
 struct ordered_vertex{
     int id;
     double score;
-    int type;  //入邻居：1  出邻居：2
+    int type; 
 };
 
 struct cluster_vertex{
     int id;
-    int is_BFS_visit;//是否被遍历过 遍历过为1 没遍历过是0
+    int is_BFS_visit;
 
 };
 
-struct vertex_score_info{  //记录每个cluster内顶点的信息 包含score等
+struct vertex_score_info{
     int id;
     double score;
 };
@@ -59,7 +55,7 @@ struct cluster_info{
 struct cluster_neighbor{
     int id;
     double score;
-    int type; //入邻居：1  出邻居：2
+    int type;
 };
 
 bool cmp_v_score(ordered_vertex a, ordered_vertex b){
@@ -98,11 +94,11 @@ std::vector<int> BFS(std::vector<std::vector<int>> out_neib_vec,std::vector<int>
 
     //std::vector<int> visited;
 
-    BFS_queue.push(root); //将root放入
+    BFS_queue.push(root);
 
     //visited.push_back(root);
 
-    cluster[inner_vertex_index[root]].is_BFS_visit=1; //置位，表示已经访问
+    cluster[inner_vertex_index[root]].is_BFS_visit=1;
 
     //std::cout<<"start BFS"<<std::endl;
     //BFS
@@ -114,10 +110,10 @@ std::vector<int> BFS(std::vector<std::vector<int>> out_neib_vec,std::vector<int>
         BFS_queue.pop();
         for(int i=0 ; i < out_neib_vec[curr_vtx].size() ; i++){
             if( belong_to_cluster[out_neib_vec[curr_vtx][i]] == cluster_id && cluster[inner_vertex_index[out_neib_vec[curr_vtx][i]]].is_BFS_visit==0){
-                //如果在同一个cluster内 则将其加入队列
+                
                 BFS_queue.push(out_neib_vec[curr_vtx][i]);
-                //visited.push_back(out_neib_vec[curr_vtx][i]);
-                cluster[inner_vertex_index[out_neib_vec[curr_vtx][i]]].is_BFS_visit=1; //访问置位
+                
+                cluster[inner_vertex_index[out_neib_vec[curr_vtx][i]]].is_BFS_visit=1; 
 
             }
         }
@@ -126,7 +122,7 @@ std::vector<int> BFS(std::vector<std::vector<int>> out_neib_vec,std::vector<int>
 
     for(int i=0;i<cluster.size();i++){
         if(cluster[i].is_BFS_visit==0){
-            //没被访问就加入到BFS_result中
+            
             BFS_result.push_back(cluster[i].id);
         }
 
@@ -137,11 +133,10 @@ std::vector<int> BFS(std::vector<std::vector<int>> out_neib_vec,std::vector<int>
 }
 
 
-//获取保证最大值的插入位置
 void getMaxScore(std::vector<ordered_vertex> neighbor_vertex, double& Maxscore){
 
     if(neighbor_vertex.size()==0){
-        Maxscore=-100; //感觉可以随便取的
+        Maxscore=-100;
         return;
     }
 
@@ -151,8 +146,7 @@ void getMaxScore(std::vector<ordered_vertex> neighbor_vertex, double& Maxscore){
     double score = 0;
 
     for(int i=0 ; i< neighbor_vertex.size() ; i++){
-        //入邻居：1  出邻居：2
-        //入+ 出-
+        
         if(neighbor_vertex[i].type==1){
             score++;
             if(score > max_score){
@@ -174,13 +168,12 @@ void getMaxScore(std::vector<ordered_vertex> neighbor_vertex, double& Maxscore){
 
 
     if(max_index==-1){
-        //说明在最前方
-        Maxscore = neighbor_vertex[0].score - 5;//步长设置为5
+        
+        Maxscore = neighbor_vertex[0].score - 5;
     }
 
     else if(max_index == neighbor_vertex.size()-1){
-        //说明在最后方
-        Maxscore = neighbor_vertex[neighbor_vertex.size()-1].score + 5;//步长设置为5
+        Maxscore = neighbor_vertex[neighbor_vertex.size()-1].score + 5;
 
     }
     else{
@@ -203,10 +196,7 @@ void getMaxScoreForCluster(std::vector<cluster_neighbor> neighbor, std::vector<s
     double score = 0;
 
     for(int i=0;i<neighbor.size();i++){
-        //入邻居：1  出邻居：2
-        //入+ 出-
-
-        //处理入邻居
+        
         if(neighbor[i].type==1){
             score += cluster_edge[neighbor[i].id][cluster_id];
             if(score>max_score){
@@ -216,7 +206,6 @@ void getMaxScoreForCluster(std::vector<cluster_neighbor> neighbor, std::vector<s
 
         }
 
-        //处理出邻居
         else if(neighbor[i].type==2){
             score -= cluster_edge[cluster_id][neighbor[i].id];
             if(score>max_score){
@@ -229,12 +218,10 @@ void getMaxScoreForCluster(std::vector<cluster_neighbor> neighbor, std::vector<s
     }
 
     if(max_index==-1){
-        //说明放前面
         Maxscore = neighbor[0].score - 5;
     }
 
     else if(max_index == neighbor.size()-1){
-        //说明放最后
         Maxscore = neighbor[neighbor.size()-1].score+5;
 
     }
@@ -248,8 +235,6 @@ void getMaxScoreForCluster(std::vector<cluster_neighbor> neighbor, std::vector<s
 
 
 
-
-// 找一个score最大的且没被访问过的点作为root点
 int findMaxRootScore(std::vector<std::pair<int, int>> inner_vtx,
                      int& root_ptr, std::vector<bool>& is_visited)
 {
@@ -274,7 +259,6 @@ int findMaxRootScore(std::vector<std::pair<int, int>> inner_vtx,
 
 
 
-//对于一个root，把这个root的所有未访问过的出邻居都加入neib_q中
 void getQ(int root, std::vector<bool>& is_visited, std::vector<std::vector<int>>& out_neib_vec,
           std::unordered_map<int, int> map_id_score, std::queue<int> &neib_q)
 {
@@ -316,8 +300,7 @@ int main(int argc, char** argv){
     }
     infile.close();
 
-    // build graph
-    int n = max_vid + 1; // 顶点数量设置为: 最大id+1
+    int n = max_vid + 1;
     std::cout << "vertices num = " << n << std::endl;
 
     std::vector<std::vector<int>> out_neib_vec(n);
@@ -330,37 +313,19 @@ int main(int argc, char** argv){
         u = edge.first;
         v = edge.second;
 
-        //确认出邻居和入邻居
         out_neib_vec[u].emplace_back(v);
         in_neib_vec[v].emplace_back(u);
     }
 
 
-    /**
-    * cluster file 里存的是：
-    * 3 0 1 2
-    * 2 3 4
-    * 1 5
-    * 每行第一列表示包含点的个数，后面为该cluster所包含点的id
-    */
-
-    //建立cluster的相关数据
-    /**
-     * cluster的数据存在std::vector<std::vector<int>> id_and_cluster;中
-     * belong_to_cluster用来查询顶点在哪个cluster中
-     *
-     * */
-
-
     std::string cluster_filename = argv[2];
-    //std::vector<std::vector<int>> id_and_cluster; // 下标看做是cluster的id，二维是cluster内顶点id。{{0,1,2}, {3,4}, {5}}
-    std::vector<std::vector<cluster_vertex>> id_and_cluster; // 下标看做是cluster的id，二维是cluster内顶点id。{{0,1,2}, {3,4}, {5}}
-    std::vector<std::map<int,int>> cluster_inner_index; //记录cluster内部某个元素的位置 相当于索引
+    std::vector<std::vector<cluster_vertex>> id_and_cluster;
+    std::vector<std::map<int,int>> cluster_inner_index;
 
     infile.open(cluster_filename);
     std::string line;
     int cluster_num = 0;
-    std::vector<int> belong_to_cluster(n); // 每个顶点属于哪一个cluster
+    std::vector<int> belong_to_cluster(n);
     while (getline(infile, line))
     {
         int count;
@@ -368,20 +333,19 @@ int main(int argc, char** argv){
         std::vector<cluster_vertex> cluster_vertex_temp;
         std::map<int,int> cluster_inner_index_temp;
         std::istringstream iss(line);
-        iss >> count; // 读取第一个数字
+        iss >> count;
         int number;
         int index=0;
-        while (iss >> number && cluster_vertex_temp.size() < count) { // 逐个读取数字
-            //row.emplace_back(number); // 将数字存入vector
-            cluster_vertex_temp.push_back({number,0}); //将点存入cluster中
+        while (iss >> number && cluster_vertex_temp.size() < count) { 
+            cluster_vertex_temp.push_back({number,0});
             cluster_inner_index_temp[number] = index;
             index++;
 
             belong_to_cluster[number] = cluster_num;
         }
 
-        id_and_cluster.emplace_back(cluster_vertex_temp); // 将当前cluster id和cluster内顶点id向量存入vector中
-        cluster_inner_index.push_back(cluster_inner_index_temp);//将当前cluster的索引存入数组中
+        id_and_cluster.emplace_back(cluster_vertex_temp);
+        cluster_inner_index.push_back(cluster_inner_index_temp);
 
         ++cluster_num;
     }
@@ -398,71 +362,44 @@ int main(int argc, char** argv){
 
     double vertex_process_start = clock();
     for(int i=0 ; i<cluster_num ; i++){
-        //遍历每一个cluster
-        //std::vector<int> vertex_queue(id_and_cluster[i].size());
-        //选取cluster的第一个点作为root
 
-        //BFS之后得到遍历的顺序 存入vertex_queue之中
         std::vector<int> vertex_queue = BFS(out_neib_vec , belong_to_cluster , id_and_cluster[i][rand()%id_and_cluster[i].size()].id , i, id_and_cluster[i] , cluster_inner_index[i]);//i就是cluster值
 
-        //std::cout<<"queue size: "<<vertex_queue.size()<<std::endl;
-        //std::vector<std::pair<int, float>>vertex_with_score;//记录每个顶点的score/value
-        //使用hashmap
-        //前一个数据表示id 后一个数据表示score值，此表需要不断更新
         std::unordered_map<int, double> vertex_score;
 
-        //初始化vertex_score，全部的值都计为 MIN_SCORE
         for(auto v : id_and_cluster[i]){
             vertex_score[v.id] = MIN_SCORE;
         }
 
-        //std::cout<<"start getting neighbor"<<std::endl;
 
         for(int j=0;j<vertex_queue.size();j++){
-            //应该对每个顶点记录一个表，其中保存邻居已经记录过分的点
-            //按照顶点的邻居顶点按照分数进行排序，这样复杂度很低
             if(j==0){
-                //第一个顶点的score直接设为1
                 vertex_score[vertex_queue[j]] = 1;
                 continue;
             }
 
-            //每个点维护一个邻居节点表，后续要对此表进行排序
             std::vector<ordered_vertex> neighbor_vertex;
 
-            //遍历出邻居
             for(auto out_neighbor: out_neib_vec[vertex_queue[j]]){
                 if(belong_to_cluster[out_neighbor] == i){
-                    //判断是否属于同一个cluster
                     if(vertex_score[out_neighbor]!=MIN_SCORE){
-                        //只把已经计算出score的点放进邻居节点表
-                        //入邻居：1  出邻居：2
                         neighbor_vertex.push_back({out_neighbor,vertex_score[out_neighbor], 2});
                     }
                 }
             }
 
-            //遍历入邻居
             for(auto in_neighbor: in_neib_vec[vertex_queue[j]]){
                 if(belong_to_cluster[in_neighbor] == i){
-                    //判断是否属于同一个cluster
                     if(vertex_score[in_neighbor]!=MIN_SCORE){
-                        //只把已经计算出score的点放进邻居节点表
-                        //入邻居：1  出邻居：2
                         neighbor_vertex.push_back({in_neighbor,vertex_score[in_neighbor], 1});
                     }
                 }
             }
 
-            //std::cout<<"finish getting neighbor"<<std::endl;
-            //std::cout<<"neighbor num: "<<neighbor_vertex.size()<<std::endl;
-            //对邻居顶点按照score排序
             std::sort(neighbor_vertex.begin() , neighbor_vertex.end() , cmp_v_score);
 
-            //std::cout<<"finish sorting neighbor"<<std::endl;
             double temp_maxscore = 0;
             getMaxScore(neighbor_vertex , temp_maxscore);
-            //std::cout<<"finish getting maxscore"<<std::endl;
             vertex_score[vertex_queue[j]] = temp_maxscore;
         }
 
@@ -486,51 +423,38 @@ int main(int argc, char** argv){
 
 
     std::vector<std::vector<int>> cluster_edge(cluster_num, std::vector<int>(cluster_num, 0));
-    //将数组全部置0
 
-    std::vector<cluster_info> cluster_and_score;//该vec记录cluster的id和score信息，方便后续排序
+    std::vector<cluster_info> cluster_and_score;
 
-    //用于记录cluster之间的边
-    //使用二维数组
     for(int i=0;i<cluster_num;i++){
         for(auto curr_vertex : id_and_cluster[i]){
-            //遍历第一个cluster的点
             for(auto out_vertex : out_neib_vec[curr_vertex.id]){
                 if(belong_to_cluster[out_vertex] != i){
-                    //i就是cluster号
-                    //指向其他的cluster 需要记录
                     cluster_edge[i][belong_to_cluster[out_vertex]]++;
                 }
             }
         }
 
-        //cluster_and_score.push_back({i,MIN_SCORE}); 有问题which cannot be narrowed to type 'float' ？
-        cluster_and_score.push_back({i,-9999999}); //先把初值赋最小
+        cluster_and_score.push_back({i,-9999999}); 
 
 
     }
 
-    //std::cout<<"finish init score table"<<std::endl;
 
 
 
 
-    //遍历cluster 按照cluster ID的顺序进行排序
    for(int i=0;i<cluster_num;i++){
-       //std::cout<<"processing "<<i<<" cluster super node"<<std::endl;
 
        if(i==0){
-           //如果是第一个，直接赋值1
            cluster_and_score[i].score=1;
            continue;
        }
 
        std::vector<cluster_neighbor> neighbor;
 
-       //入邻居：1  出邻居：2
        for(int j=0;j<cluster_num;j++){
            if(j!=i){
-               //加入出邻居
                if(cluster_edge[i][j]>0 && cluster_and_score[j].score > -9999999){
                    neighbor.push_back({j,cluster_and_score[j].score,2});
                }
@@ -540,7 +464,6 @@ int main(int argc, char** argv){
 
        for(int k=0;k<cluster_num;k++){
            if(k!=i){
-               //加入入邻居
                if(cluster_edge[k][i]>0 && cluster_and_score[k].score > -9999999){
                    neighbor.push_back({k,cluster_and_score[k].score,1});
 
@@ -551,44 +474,35 @@ int main(int argc, char** argv){
        }
 
        std::sort(neighbor.begin(),neighbor.end(), cmp_cluster_score);
-       //对邻居cluster进行排序
 
        double maxScore = 0;
        getMaxScoreForCluster(neighbor , cluster_edge , maxScore,i);
 
-       //更新值
        cluster_and_score[i].score = maxScore;
-       //std::cout<<"score:"<<maxScore<<std::endl;
 
    }
 
    std::sort(cluster_and_score.begin(), cluster_and_score.end(), cmp_cluster_info);
-   //对cluster_and_score进行排序
 
 
-    //double vertex_process_start = clock();
     std::cout<<"process time: "<<(clock() - vertex_process_start)/ CLOCKS_PER_SEC<<std::endl;
 
 
 
 
-//输出文件
    std::ofstream outfile(input_filename+".gographcluster_v");
-    // std::ofstream outfile(input_filename+".test_v");
 
     outfile.setf(std::ios::fixed);
-    outfile.precision(3);//精度为输出小数点后5位
+    outfile.precision(3);
 
     double current_score = -500000;
 
     for(int i=0;i<cluster_and_score.size();i++){
 
         int current_cluster = cluster_and_score[i].id;
-        //all_vertex_score[current_cluster]
 
         for(int j=0;j<all_vertex_score[current_cluster].size();j++){
             outfile << all_vertex_score[current_cluster][j].id<<" "<< current_score<< '\n';
-            // std::cout<< all_vertex_score[current_cluster][j].id<<" "<< current_score<<std::endl;
             current_score += 1;
         }
 

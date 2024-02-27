@@ -211,7 +211,7 @@ int main(int argc, char** argv) {
 
 //输出文件
     //std::ofstream outfile(input_filename+".gographcluster_v");
-    std::ofstream outfile(input_filename + ".PartGoGraph_v");
+    std::ofstream outfile(input_filename + ".GoGraph_v");
 
     for(int i=0;i<all_vertex.size();i++){
         outfile << all_vertex[i].id << '\n';

@@ -223,7 +223,7 @@ int main(int argc, char** argv) {
 
 //输出文件
     //std::ofstream outfile(input_filename+".gographcluster_v");
-    std::ofstream outfile(input_filename + ".othervexters_v");
+    std::ofstream outfile(input_filename + ".othervertex_v");
 
     outfile.setf(std::ios::fixed);
     outfile.precision(3);//精度为输出小数点后3位

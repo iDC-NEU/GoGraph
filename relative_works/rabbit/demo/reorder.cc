@@ -165,7 +165,7 @@ double compute_modularity(const adjacency_list& adj, const vint* const coms) {
 void detect_community(adjacency_list adj, const std::string outpath) {
   auto _adj = adj;  // copy `adj` because it is used for computing modularity
 
-  std::cerr << "Detecting communities...\n";
+  // std::cerr << "Detecting communities...\n";
   const double tstart = rabbit_order::now_sec();
   //--------------------------------------------
   auto       g = rabbit_order::aggregate(std::move(_adj));
@@ -174,25 +174,25 @@ void detect_community(adjacency_list adj, const std::string outpath) {
   for (vint v = 0; v < g.n(); ++v)
     c[v] = rabbit_order::trace_com(v, &g);
   //--------------------------------------------
-  std::cerr << "Runtime for community detection [sec] cluster_time: "
-            << rabbit_order::now_sec() - tstart << std::endl;
+  // std::cerr << "Runtime for community detection [sec] cluster_time: "
+  //           << rabbit_order::now_sec() - tstart << std::endl;
 
   // Print the result
   // std::copy(&c[0], &c[g.n()], std::ostream_iterator<vint>(std::cout, "\n"));
   // write_community
   {
-    std::cout << "output=" << outpath << std::endl;
+    // std::cout << "output=" << outpath << std::endl;
     std::ofstream fout(outpath);
     for (vint v = 0; v < g.n(); ++v) {
       fout << v << " " << c[v] << "\n";
     }
     fout.close();
-    std::cout << "--finish write to " << outpath << "\n" << std::endl;
+    // std::cout << "--finish write to " << outpath << "\n" << std::endl;
   }
 
-  std::cerr << "Computing modularity of the result...\n";
+  // std::cerr << "Computing modularity of the result...\n";
   const double q = compute_modularity(adj, c.get());
-  std::cerr << "Modularity: " << q << std::endl;
+  // std::cerr << "Modularity: " << q << std::endl;
 }
 
 void reorder(adjacency_list adj) {
@@ -243,7 +243,7 @@ int main(int argc, char* argv[]) {
 
   for (int i = 0; i < argc; i++) {
     std::string t = argv[i];
-    std::cerr << "i=" << i << " " << t << std::endl;
+    // std::cerr << "i=" << i << " " << t << std::endl;
   }
 
   int threads = std::stoi(argv[2]);
@@ -253,18 +253,18 @@ int main(int argc, char* argv[]) {
     outpath = argv[4];
   }
 
-  std::cerr << "Number of threads: " << omp_get_max_threads() << std::endl;
+  // std::cerr << "Number of threads: " << omp_get_max_threads() << std::endl;
 
-  std::cerr << "Reading an edge-list file: " << graphpath << std::endl;
+  // std::cerr << "Reading an edge-list file: " << graphpath << std::endl;
   auto       adj = read_graph(graphpath);
   const auto m   =
       boost::accumulate(adj | transformed([](auto& es) {return es.size();}),
                         static_cast<size_t>(0));
-  std::cerr << "Number of vertices: " << adj.size() << std::endl;
-  std::cerr << "Number of edges: "    << m          << std::endl;
+  // std::cerr << "Number of vertices: " << adj.size() << std::endl;
+  // std::cerr << "Number of edges: "    << m          << std::endl;
 
   if (commode) {
-    std::cerr << "\ndetect_community: " << std::endl;
+    // std::cerr << "\ndetect_community: " << std::endl;
     detect_community(std::move(adj), outpath);
   }
   else {

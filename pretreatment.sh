@@ -1,16 +1,19 @@
-# ##############################################################################
-root_path=/home/liupengxi/code/GoGraph
-files=("$1") # web-Google roadNet-CA soc-twitter-2010     # web-indochina-2004 sk-2005 google cit-Patents wikilink
+root_path=$(pwd)
 
-cd $root_path
+# files=("$1")
+files=("indochina")
+
+cd ${root_path}/code
+g++ processdata.cpp -std=c++11 -o processdata
+
+cd ${root_path}/code
 g++ pretreatment.cpp -std=c++11 -o pretreatment
 
 for filename in ${files[@]}
 do
-  echo -e "\n#pretreatment" 
-  efile="/home/liupengxi/dataset/large/${filename}/${filename}.mtx"
-  cmd="${root_path}/pretreatment ${efile}"
-  echo $cmd
-  eval $cmd
+  echo -e "#pretreatment" 
+  efile="${root_path}/dataset/${filename}.mtx"
+  eval "${root_path}/code/processdata ${efile}"
+  eval "${root_path}/code/pretreatment ${efile}.m"
   echo '------------------------------------------------------------------------'
 done

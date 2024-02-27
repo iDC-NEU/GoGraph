@@ -12,7 +12,7 @@ using namespace std;
 
 void readData(string edge_new_path, int pass_step)
 {
-    std::cout << "\nread file... " << edge_new_path << std::endl;
+    // std::cout << "\nread file... " << edge_new_path << std::endl;
     ifstream inFile(edge_new_path);
     if(!inFile){
         std::cout << "open file failed. " << edge_new_path << std::endl;
@@ -22,7 +22,7 @@ void readData(string edge_new_path, int pass_step)
     std::string pass;
     for(int i = 0; i < pass_step; i++){
         getline(inFile, pass);
-        std::cout << pass << std::endl;
+        // std::cout << pass << std::endl;
     }
 
     std::unordered_map<int, int> cluster; 
@@ -39,9 +39,9 @@ void readData(string edge_new_path, int pass_step)
     }
     inFile.close();
 
-    std::cout << "read finish..." << std::endl;
-    std::cout << "node_num=" << node_num << std::endl;
-    std::cout << "cluster.size=" << cluster.size() << std::endl;
+    // std::cout << "read finish..." << std::endl;
+    // std::cout << "node_num=" << node_num << std::endl;
+    // std::cout << "cluster.size=" << cluster.size() << std::endl;
     int cmp_node_num = 0;
     int MIN_NODE = 8;
     int MAX_NODE = 100;
@@ -57,10 +57,10 @@ void readData(string edge_new_path, int pass_step)
         min_node = std::min(min_node, cs.second);
         max_node = std::max(max_node, cs.second);
     }
-    std::cout << "cmp_rate=" << (cmp_node_num*1.0) / node_num << std::endl;
-    std::cout << "super_node_num=" << super_node_num << std::endl;
-    std::cout << "min_node=" << min_node << std::endl;
-    std::cout << "max_node=" << max_node << std::endl;
+    // std::cout << "cmp_rate=" << (cmp_node_num*1.0) / node_num << std::endl;
+    // std::cout << "super_node_num=" << super_node_num << std::endl;
+    // std::cout << "min_node=" << min_node << std::endl;
+    // std::cout << "max_node=" << max_node << std::endl;
 }
 
 void read_data(std::string &line, std::set<int>& P) {
@@ -70,7 +70,7 @@ void read_data(std::string &line, std::set<int>& P) {
 
     int size = atoi(linestr.substr(0, pos).c_str()); //字符串转换成数值  源点
     std::string links = linestr.substr(pos + 1);
-    cout<<"links:"<<links<<endl;
+    // cout<<"links:"<<links<<endl;
     if (*(links.end() - 1) != ' ') {
         links = links + " ";
     }
@@ -89,7 +89,7 @@ void read_data(std::string &line, std::set<int>& P) {
 }
 
 void read_supernode1(const string path){
-    std::cout << "read file... " << path << std::endl;
+    // std::cout << "read file... " << path << std::endl;
     std::ifstream inFile;
     inFile.open(path);
     if (!inFile) {
@@ -106,11 +106,11 @@ void read_supernode1(const string path){
         }
         std::set<int> P;
         read_data(line, P); //invoke api, get the value of key field and data field
-        std::cout << "w=" << w << " p.size=" << P.size() << std::endl;
-        for(auto p : P){
-            std::cout << p << " ";
-        }
-        std::cout << std::endl;
+        // std::cout << "w=" << w << " p.size=" << P.size() << std::endl;
+        // for(auto p : P){
+        //     std::cout << p << " ";
+        // }
+        // std::cout << std::endl;
         w++;
         if(w > 4){
             return ;
@@ -132,11 +132,11 @@ void read_supernode(const string path){
             inFile >> v_id;
             P.insert(v_id);
         }
-        std::cout << "w=" << w << " p.size=" << P.size() << std::endl;
-        for(auto p : P){
-            std::cout << p << " ";
-        }
-        std::cout << std::endl;
+        // std::cout << "w=" << w << " p.size=" << P.size() << std::endl;
+        // for(auto p : P){
+        //     std::cout << p << " ";
+        // }
+        // std::cout << std::endl;
         w++;
         if(w > 4){
             return ;
@@ -167,7 +167,7 @@ void read_supernode(const string path){
         每行第一列表示包含点的个数， 后面为该聚类所包含点的id
 */ 
 void r_w_Data(string edge_new_path, int pass_step, string sp_path) {
-    std::cout << "read file... " << edge_new_path << std::endl;
+    // std::cout << "read file... " << edge_new_path << std::endl;
     ifstream inFile(edge_new_path);
     if(!inFile){
         std::cout << "open file failed. " << edge_new_path << std::endl;
@@ -177,7 +177,7 @@ void r_w_Data(string edge_new_path, int pass_step, string sp_path) {
     std::string pass;
     for(int i = 0; i < pass_step; i++){
         getline(inFile, pass);
-        std::cout << "pass:" << pass << std::endl;
+        // std::cout << "pass:" << pass << std::endl;
     }
 
     std::unordered_map<int, std::unordered_set<int>> cluster; 
@@ -195,9 +195,9 @@ void r_w_Data(string edge_new_path, int pass_step, string sp_path) {
     }
     inFile.close();
 
-    std::cout << "read finish..." << std::endl;
-    std::cout << "node_num=" << node_num << std::endl;
-    std::cout << "cluster.size=" << cluster.size() << std::endl;
+    // std::cout << "read finish..." << std::endl;
+    // std::cout << "node_num=" << node_num << std::endl;
+    // std::cout << "cluster.size=" << cluster.size() << std::endl;
     int cmp_node_num = 0;
     int MIN_NODE_NUM = 1;
     int MAX_NODE_NUM = 0x3f3f3f3f;
@@ -213,10 +213,10 @@ void r_w_Data(string edge_new_path, int pass_step, string sp_path) {
         min_node = std::min(min_node, int(cs.second.size()));
         max_node = std::max(max_node, int(cs.second.size()));
     }
-    std::cout << "cmp_rate=" << (cmp_node_num*1.0) / node_num << std::endl;
-    std::cout << "super_node_num=" << super_node_num << std::endl;
-    std::cout << "min_node=" << min_node << std::endl;
-    std::cout << "max_node=" << max_node << std::endl;
+    // std::cout << "cmp_rate=" << (cmp_node_num*1.0) / node_num << std::endl;
+    // std::cout << "super_node_num=" << super_node_num << std::endl;
+    // std::cout << "min_node=" << min_node << std::endl;
+    // std::cout << "max_node=" << max_node << std::endl;
 
     // 写入文件
     // string sp_path = edge_new_path+".c";
@@ -232,11 +232,11 @@ void r_w_Data(string edge_new_path, int pass_step, string sp_path) {
         }
     }
     fout.close();
-    std::cout << "finish write... " << sp_path << std::endl;
+    // std::cout << "finish write... " << sp_path << std::endl;
 }
 
 int main(int argc, char **argv){
-    std::cout << "- start getspNode..." << std::endl;
+    // std::cout << "- start getspNode..." << std::endl;
     // cmd: g++ getSpNode.cc -o getSpNode && ./getSpNode [cluster_path] [gen_super_nodes_path] [max_nodenum_of_cluster]
 
 
@@ -244,14 +244,14 @@ int main(int argc, char **argv){
     std::string path = argv[2];
     std::string max_comm_size = argv[3];
     std::string sp_path = path + ".c_" + max_comm_size; // 超点文件
-    std::cout << "cluster_path=" << cluster_path << std::endl;
-    std::cout << "write path=" << path << std::endl;
+    // std::cout << "cluster_path=" << cluster_path << std::endl;
+    // std::cout << "write path=" << path << std::endl;
     
     // readData(path, 4);
     // std::cout << "filename=" << filename << std::endl;
     int passLine = 0;
     r_w_Data(cluster_path, passLine, sp_path); // 读聚类的数据,并写入超点数据
 
-    std::cout << "- finish!!!" << std::endl;
+    // std::cout << "- finish!!!" << std::endl;
     return 0;
 }
